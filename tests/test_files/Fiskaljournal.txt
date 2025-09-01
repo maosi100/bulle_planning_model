@@ -1,0 +1,195 @@
+FiscalToText-Main 1.6.1
+
+
+Fiskaljournal-Typ: Deutschland mit Signatur (12)
+
+
+Schubladenöffnung                                            31.03.2023 15:33:53
+  Kasse: 1
+    Bediener: CHEF (#15)
+    Info-Daten: Lade 1 (#1)
+    Info-Wert: Kein Verkauf (#4)
+
+
+Registrierung starten (#1)                                   31.03.2023 15:33:53
+  Kasse: 1 (2345034 / 6.4.2.1 30.11.20 15:52)
+  Bediener: CHEF (#15)
+  Seriennummer: 2345034
+  Sequenznummer: 855
+  TSE-Daten:
+    Status: In Betrieb
+    Signaturalgorithmus: ecdsa-plain-SHA384
+    Zeitformat: unixTime
+  Zertifikat-Seriennummer: E57DE2C777143B964EFDECBEC816461D907C234A7D9C9244E18271D5650A6350
+  Signaturzertifikat: MIIDYTCCAuigAwIBAgIQHunzBmEOZH+0ymS9K2pfijAKBggqhkjOPQQDAzBiMREwDwYDVQQDEwhUU0UgQ0EgMTElMCMGA1UEChMcVC1TeXN0ZW1zIEludGVybmF0aW9uYWwgR21iSDEZMBcGA1UECxMQVGVsZWtvbSBTZWN1cml0eTELMAkGA1UEBhMCREUwHhcNMTkxMjE3MDIyNTE4WhcNMjUwOTE3MjM1OTU5WjCBiDEYMBYGA1UELhMPQlNJLURTWi1DQy0xMTIxMQswCQYDVQQGEwJERTEUMBIGA1UEChMLU3dpc3NiaXQgQUcxSTBHBgNVBAMTQDk2OGNkYWE0ZTU5MjgzOWUwNzE1M2UyYmI3NGI1MjIxZTcxYWY5NmMyMzZmNDA3YTgzMTUwZTI2NGFhY2VmYjYwejAUBgcqhkjOPQIBBgkrJAMDAggBAQsDYgAERPOLciihRXC6+J5Jufae6vzgo7uv+wWyaCIT311+VkJVFuqpJqmDGZ09a+uGcoBiHd44IJvJKbudJ/mGdGGZ2g8UpjzdT64T57sAGrUPVCbN04ssMbaN2KNVYGbwhOFHo4IBNjCCATIwHwYDVR0jBBgwFoAUgrirMwmn//QHkw8kNPpedfbJBDwwHQYDVR0OBBYEFGhmMw7hH3WZ9ZPojaSViNbC+v7wMDsGA1UdHwQ0MDIwMKAuoCyGKmh0dHA6Ly9jcmwudHNlLnRlbGVzZWMuZGUvY3JsL1RTRV9DQV8xLmNybDAOBgNVHQ8BAf8EBAMCB4AwDAYDVR0TAQH/BAIwADBNBgNVHSAERjBEMEIGCSsGAQQBvUcNKTA1MDMGCCsGAQUFBwIBFidodHRwOi8vZG9jcy50c2UudGVsZXNlYy5kZS9jcHMvdHNlLmh0bWwwRgYIKwYBBQUHAQEEOjA4MDYGCCsGAQUFBzAChipodHRwOi8vY3J0LnRzZS50ZWxlc2VjLmRlL2NydC9UU0VfQ0FfMS5jcnQwCgYIKoZIzj0EAwMDZwAwZAIwDBRqTnqFeUTUfX1hsCsxf2ZguTlbA3XxluCTh/Ny50k4YBXaY3QxTpwGSpmGFppuAjARQa9Qww1glUyyf7NqGvUV+DyW1nL7+v+ZA0AXBePvi9scIE2D/Ky87RYMn/pFzPU=
+  Öffentl. Schlüssel: BETzi3IooUVwuvieSbn2nur84KO7r/sFsmgiE99dflZCVRbqqSapgxmdPWvrhnKAYh3eOCCbySm7nSf5hnRhmdoPFKY83U+uE+e7ABq1D1QmzdOLLDG2jdijVWBm8IThRw==
+  Währung (ISO Code): EUR (978)
+  Filialdaten:
+    Name: BULLE Bäckerei
+    Straße: Birkenstraße 55
+    Ort: Düsseldorf
+    PLZ: 40233
+    Land: Deutschland
+    Ländercode (ISO-3166-1): DE/DEU/276
+  Firmendaten:
+    Steuernummer: Steuer-Nr. 133/5809/3777
+    Name: BULLE Bäckerei GmbH
+    Straße: Ostrasse 113
+    Ort: Düsseldorf
+    PLZ: 40210
+    Land: Deutschland
+    Ländercode (ISO-3166-1): DE/DEU/276
+
+  Letzte Beleg-Sequenznummer: 257081
+  Beleg nicht gedruckt
+
+  Netzwerkinformationen:
+    Kasse: 1 - Kasse 1 - 192.168.0.2
+
+  Bar gezahlt (Gesamt)                                                932.548,51
+  Unbar gezahlt (Gesamt)                                            1.122.507,35
+
+  Steuern (Gesamt):
+    Umsatz Steuer 1 (19%)
+      Umsatz Brutto                                                     1.841,76
+      Negativumsatz                                                        57,19
+    Umsatz Steuer 2 (7%)
+      Umsatz Brutto                                                 1.734.019,94
+      Negativumsatz                                                    21.010,51
+    Umsatz Steuer 3 (16%)
+      Umsatz Brutto                                                       121,00
+    Umsatz Steuer 4 (5%)
+      Umsatz Brutto                                                   318.493,50
+      Negativumsatz                                                     1.875,15
+
+  Trinkgelder (Gesamt)                                        452         579,66
+
+
+Tisch-0-Bon (#3)                                             31.03.2023 15:37:57
+  Kasse: 1 (2345034)
+  Bediener: VERKAUF I (#1)
+  Seriennummer: 2345034
+  TSE-Daten:
+    Start: 31.03.2023 13:38:04
+  Währung (ISO Code): EUR (978)
+  Kundendaten:
+    (Nicht eingegeben)
+
+  0.5x Roggenmischbrot (#71)                                                2,45
+    Warengruppe: Brot (#1)
+    Steuer 2: 2,45
+    Außer Haus
+  0.5x Nussbrot (#78)                                                       2,70
+    Warengruppe: Brot (#1)
+    Steuer 2: 2,70
+    Außer Haus
+          Verkauf                                                           5,15
+          Verkauf Netto                                                     4,81
+                                                                   -------------
+          Summe Brutto                                                      5,15
+
+          Steuer 2 (7%)                                                     0,34
+            Umsatz Brutto: 5,15
+
+
+Rechnung (#1)                                                31.03.2023 15:38:13
+  Kasse: 1 (2345034)
+  Bediener: VERKAUF I (#1)
+  UUID: 19EF67B3103E4B72BB1750CCC19CD3B6
+  Seriennummer: 2345034
+  Beleg-Sequenznummer: 257082
+  TSE-Daten:
+    Status: In Betrieb
+    Start: 31.03.2023 13:38:04
+    Stopp: 31.03.2023 13:38:28
+    Transaktion: 256046
+    Signaturzähler: 565154
+    Prozesstyp: Kassenbeleg-V1
+    Transaktionstyp: Beleg
+    Signaturalgorithmus: ecdsa-plain-SHA384
+    Zeitformat: unixTime
+  Zertifikat-Seriennummer: E57DE2C777143B964EFDECBEC816461D907C234A7D9C9244E18271D5650A6350
+  Währung (ISO Code): EUR (978)
+  Kundendaten:
+    (Nicht eingegeben)
+
+  0.5x Roggenmischbrot (#71)                                                2,45
+    Warengruppe: Brot (#1)
+    Steuer 2: 2,45
+    Außer Haus
+  0.5x Nussbrot (#78)                                                       2,70
+    Warengruppe: Brot (#1)
+    Steuer 2: 2,70
+    Außer Haus
+          Verkauf                                                           5,15
+          Verkauf Netto                                                     4,81
+                                                                   -------------
+          Summe Brutto                                                      5,15
+
+          Steuer 2 (7%)                                                     0,34
+            Umsatz Brutto: 5,15
+
+          EC KARTE (#2)                                                     5,15
+
+  Signatur: 2D3C0A1A570E43C8F476AFA12BB1181840C61047CC6162CBA966F10E1A4E5C4AA2F8EFE48A29E08A28EBA6480C1879BA2D01D7156CD3AF7BDC83B1C9A3F48C19BEAFFBE40904E058F3D26DC536E4C02BD1698E3E227418C074278BF64334987D
+
+
+Tisch-0-Bon (#4)                                             31.03.2023 15:39:15
+  Kasse: 1 (2345034)
+  Bediener: VERKAUF I (#1)
+  Seriennummer: 2345034
+  TSE-Daten:
+    Start: 31.03.2023 13:39:28
+  Währung (ISO Code): EUR (978)
+  Kundendaten:
+    (Nicht eingegeben)
+
+  1x Osterbrot (#48)                                                       11,00
+    Warengruppe: Teilchen (#5)
+    Steuer 2: 11,00
+    Außer Haus
+          Verkauf                                                          11,00
+          Verkauf Netto                                                    10,28
+                                                                   -------------
+          Summe Brutto                                                     11,00
+
+          Steuer 2 (7%)                                                     0,72
+            Umsatz Brutto: 11,00
+
+
+Rechnung (#2)                                                31.03.2023 15:39:26
+  Kasse: 1 (2345034)
+  Bediener: VERKAUF I (#1)
+  UUID: 9DA51AE5B85A4A65B4F86CFACE4830BC
+  Seriennummer: 2345034
+  Beleg-Sequenznummer: 257083
+  TSE-Daten:
+    Status: In Betrieb
+    Start: 31.03.2023 13:39:28
+    Stopp: 31.03.2023 13:39:42
+    Transaktion: 256047
+    Signaturzähler: 565156
+    Prozesstyp: Kassenbeleg-V1
+    Transaktionstyp: Beleg
+    Signaturalgorithmus: ecdsa-plain-SHA384
+    Zeitformat: unixTime
+  Zertifikat-Seriennummer: E57DE2C777143B964EFDECBEC816461D907C234A7D9C9244E18271D5650A6350
+  Währung (ISO Code): EUR (978)
+  Kundendaten:
+    (Nicht eingegeben)
+
+  1x Osterbrot (#48)                                                       11,00
+    Warengruppe: Teilchen (#5)
+    Steuer 2: 11,00
+    Außer Haus
+          Verkauf                                                          11,00
+          Verkauf Netto                                                    10,28
+                                                                   -------------
+          Summe Brutto                                                     11,00
+
+          Steuer 2 (7%)                                                     0,72
+            Umsatz Brutto: 11,00
+
+          EC KARTE (#2)                                                    11,00
+
+  Signatur: 34550226D0E23D5290E08252363A4AB0F81A4158DDEEF9ABD76021F6F7FF3CCE39A5B6DE025CF156B12D143BDE9FE24E5D09CF06428DE7A3021EC570EA424F48AA292EFE18ACE617C9110C47DF9C34AEB83F8E6EB7FFF32436B09D55D4EEFC1C

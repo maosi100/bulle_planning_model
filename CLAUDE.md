@@ -46,16 +46,23 @@ Mengenlisten (.pdf) → MengenlistenExtractor (OCR) → JSON
    - JSON serialization matching diagram specification
    - Quality assurance with unparsed block capture
 
-2. **MengenlistenExtractor** 🔄 NEXT
-   - OCR processing of PDF shift reports
-   - Data extraction and validation
-   - JSON output format alignment
+2. **MengenlistenExtractor** ✅ COMPLETE
+   - Gemini API integration for direct PDF processing
+   - Pydantic data models (Mengenliste, MengenlisteEntry, MengenlisteMetadata)
+   - JSON output format with date-keyed structure
+   - Robust error handling and unparsed block tracking
 
-3. **DataValidator** 📋 PLANNED
+3. **Integration Tests** ✅ COMPLETE
+   - Comprehensive unittest-based integration tests for both extractors
+   - Real test data validation using actual files
+   - Single API call optimization for MengenlistenExtractor tests
+   - Graceful handling of missing API keys
+
+4. **DataValidator** 📋 PLANNED
    - Cross-validation between fiskal and mengenlisten data
    - Plausibility checks and data consistency validation
 
-4. **DataUnifier** 📋 PLANNED
+5. **DataUnifier** 📋 PLANNED
    - Combine and normalize data from both sources
    - Resolve conflicts and create unified dataset
 
@@ -69,19 +76,30 @@ Mengenlisten (.pdf) → MengenlistenExtractor (OCR) → JSON
 
 **Implementation Details:**
 - **Architecture**: Clean separation with individual model files
-- **Processing**: Memory-efficient streaming for large files (tested on real data)
+- **Processing**: Memory-efficient streaming for large files
 - **Encoding**: Automatic detection using `chardet` for German text
 - **Data Models**: Pydantic validation for type safety
 - **Core Logic**: Parses "Rechnung" blocks from start to "Signatur:" markers
-- **JSON Output**: Complete article data including names, matching specification
+- **JSON Output**: List format with complete transaction data
 - **Quality Assurance**: Captures unparsed blocks for stakeholder review
 
-**Key Methods:**
-- `read_file()`: Main processing interface
-- `convert_to_json()`: Structured JSON export
-- `save_unparsed_blocks()`: QA feature for missed transactions
+### ✅ MengenlistenExtractor - Complete & Production Ready
 
-**Testing**: Validated on April 2023 fiskal data - fast performance confirmed
+**Implementation Details:**
+- **Architecture**: Modular design with separate client, models, and extractor
+- **API Integration**: Google Gemini 2.5 Flash for direct PDF processing
+- **Data Models**: Pydantic validation (Mengenliste, MengenlisteEntry, MengenlisteMetadata)
+- **Core Logic**: Structured prompt engineering for German bakery terminology
+- **JSON Output**: Date-keyed format with production/sales day tracking
+- **Error Handling**: Robust fallback with unparsed block capture
+
+### ✅ Integration Tests - Complete
+
+**Testing Coverage:**
+- **FiskalExtractor**: 5 comprehensive integration tests using real journal data
+- **MengenlistenExtractor**: 5 optimized tests with single API call sharing
+- **Test Organization**: Consolidated test files in `tests/test_files/`
+- **API Handling**: Graceful skipping when GEMINI_API_KEY unavailable
 
 ### 🔄 Current Phase
-Ready to begin **MengenlistenExtractor** implementation for PDF processing.
+Ready to begin **DataValidator** implementation for cross-validation between extractors.
