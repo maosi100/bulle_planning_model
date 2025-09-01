@@ -25,7 +25,7 @@ class GeminiClient:
             prompt = self._create_prompt(file_path.name)
 
             response = self.client.models.generate_content(
-                model="models/gemini-2.5-flash",
+                model="models/gemini-2.5-flash-lite",
                 contents=[
                     types.Part.from_bytes(
                         data=file_path.read_bytes(), mime_type="application/pdf"
@@ -62,8 +62,8 @@ class GeminiClient:
         <extraction_rules>
         - Mengenliste: Extract product names exactly as written
         - Aktuelle Menge: Always extract, if required format into full integers
-        - Retoure: Only extract clear integers (ignore -, 0, O, ✓, symbols)
-        - Ausverkauft/Notizen: Only extract times in HH:MM format, ignore other text
+        - Retoure: Only extract ONE clear integers (ignore -, 0, O, ✓, symbols or anything that's not a clear integer)
+        - Ausverkauft/Notizen: Only extract times in HH:MM or HHMM format, ignore other text
         - Skip unclear/illegible entries rather than guessing
         - Do not extract anything from the Footer
         - Follow the output format rigorously
