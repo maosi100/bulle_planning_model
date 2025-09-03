@@ -58,13 +58,12 @@ Mengenlisten (.pdf) → MengenlistenExtractor (OCR) → JSON
    - Single API call optimization for MengenlistenExtractor tests
    - Graceful handling of missing API keys
 
-4. **DataValidator** 📋 PLANNED
-   - Cross-validation between fiskal and mengenlisten data
-   - Plausibility checks and data consistency validation
-
-5. **DataUnifier** 📋 PLANNED
-   - Combine and normalize data from both sources
-   - Resolve conflicts and create unified dataset
+4. **DataUnifier** ✅ COMPLETE
+   - Processes monthly fiskal extracts and mengenlisten directories
+   - Creates consolidated daily product data (one ConsolidatedProductData per date)
+   - Uses existing lookup tables for article name mapping to master articles
+   - Generates quality control files for unmapped items
+   - Monthly processing with JSON output capability
 
 ### Phase 2: Model Development
 - **Feature Engineering**: Extract relevant predictive features
@@ -101,5 +100,32 @@ Mengenlisten (.pdf) → MengenlistenExtractor (OCR) → JSON
 - **Test Organization**: Consolidated test files in `tests/test_files/`
 - **API Handling**: Graceful skipping when GEMINI_API_KEY unavailable
 
+### ✅ DataUnifier - Complete & Production Ready
+
+**Implementation Details:**
+- **Architecture**: Modular design with separate data models and lookup table handling
+- **Data Models**: ConsolidatedProductData, MasterArticleData, ArticleLookupTable (Pydantic)
+- **Lookup Integration**: Uses existing `data/master/lookup_table.json` with 249 variant mappings
+- **Core Logic**: Monthly processing - processes full fiskal extract + mengenlisten directory
+- **Date Grouping**: Groups fiskal transactions by date, loads mengenlisten files by date
+- **Data Merging**: Combines both sources into daily ConsolidatedProductData objects
+- **Quality Control**: Unmapped items written to `data/qc/unmapped_items_YYYY-MM-DD.json`
+- **JSON Output**: `write_monthly_consolidated_data()` method for serialization
+
+**Key Methods:**
+- `unify_monthly_data(fiskal_extract_path, mengenlisten_dir_path)` - Main processing method
+- `write_monthly_consolidated_data(consolidated_data, output_path)` - JSON export
+- Handles mengenlisten-only articles (creates entries with zero sales)
+- Proper fiskal transaction parsing from extractor JSON format
+
+**File Structure:**
+```
+src/bulle_planning_model/data_unifier/
+├── consolidated_product_data.py  # ConsolidatedProductData model
+├── master_article_data.py        # MasterArticleData model  
+├── article_lookup_table.py       # ArticleLookupTable model
+└── data_unifier.py              # Main DataUnifier class
+```
+
 ### 🔄 Current Phase
-Ready to begin **DataValidator** implementation for cross-validation between extractors.
+DataUnifier complete and tested. Ready for Phase 2: Model Development.
