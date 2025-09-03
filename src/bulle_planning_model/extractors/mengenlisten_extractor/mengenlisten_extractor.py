@@ -98,14 +98,23 @@ class MengenlistenExtractor:
         date_obj = datetime.strptime(date_key, "%Y-%m-%d").date()
 
         articles = []
+        failed_entries = []
         for article_data in data.get("articles", []):
-            article = MengenlisteEntry(
-                article_name=article_data["article_name"],
-                stock=article_data.get("stock"),
-                leftover=article_data.get("leftover"),
-                sold_out=article_data.get("sold_out"),
-            )
-            articles.append(article)
+            try:
+                article = MengenlisteEntry(
+                    article_name=article_data["article_name"],
+                    stock=article_data.get("stock"),
+                    leftover=article_data.get("leftover"),
+                    sold_out=article_data.get("sold_out"),
+                )
+                articles.append(article)
+            except Exception as e:
+                logger.warning(f"Failed to parse article entry {article_data}: {e}")
+                failed_entries.append(article_data)
+                continue
+        
+        if failed_entries:
+            logger.info(f"Successfully parsed {len(articles)} articles, skipped {len(failed_entries)} invalid entries")
 
         return Mengenliste(
             report_date=date_obj,

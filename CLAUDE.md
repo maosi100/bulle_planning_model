@@ -1,131 +1,107 @@
-# Bulle Planning Model
+# Bulle Planning Model - Development Context
 
-A Python application for predicting bakery sales based on historical data from multiple sources.
+## Project Architecture & Current State
 
-## Project Overview
+**Business Purpose**: Bakery sales prediction model using historical data from registers, shift reports, and orders.
 
-This application combines data from two primary sources to build predictive models for bakery sales:
+**Current Phase**: Phase 1 Complete (Data Processing) - Ready for Phase 2 (Model Development)
 
-1. **Fiskaljournale** - Monthly register extracts in .txt format containing transaction data
-2. **Mengenlisten** - PDF files of paper shift reports filled out by employees, processed via OCR
+**Data Sources**:
+1. **Fiskaljournale** - Register transaction data (.txt → JSON)
+2. **Mengenlisten** - Employee shift reports (.pdf → JSON via Gemini API)
+3. **Bestellungen** - Customer orders (.csv → JSON)
 
-## Architecture
+**Processing Pipeline**: Raw Data → Individual Extractors → Processed JSON → DataUnifier → Consolidated Data
 
-The application follows a two-phase approach:
+## Key Implementation Decisions Made
 
-### Phase 1: Data Extraction & Processing
-- **FiskalExtractor**: Processes .txt register files into structured JSON
-- **MengenlistenExtractor**: Uses OCR to extract data from PDF shift reports into JSON  
-- **DataValidator**: Validates extracted data for consistency and completeness
-- **DataUnifier**: Combines and normalizes data from both sources
+**Error Handling Strategy**: Individual entry failures don't break entire file processing (resilient parsing)
+**Price Handling**: Bestellungen prices converted from cents to euros (660 cents = €6.60)
+**Data Unification**: Uses lookup table (`data/master/lookup_table.json`) to map article variants to master articles
+**QC Strategy**: All unmapped/unparsed items saved to `../../data/processed/qc/` for review
+**API Management**: Gemini API calls include 5-second rate limiting
 
-### Phase 2: Model Development
-- **Feature Engineering**: Identifies and extracts relevant features from unified data
-- **Model Creation**: Builds predictive models for sales forecasting
+## Component Status & Technical Details
 
-## Data Flow
+### ✅ Extractors (Complete)
+**FiskalExtractor** (`src/extractors/fiskal_extractor/`)
+- Parses "Rechnung" blocks from register .txt files
+- Handles German encoding with `chardet`
+- Outputs transaction JSON with LineItem arrays
 
+**MengenlistenExtractor** (`src/extractors/mengenlisten_extractor/`)
+- Uses Gemini 2.5 Flash API for PDF → structured JSON
+- Individual entry error handling (skips invalid, keeps valid)
+- Date-keyed JSON output format
+
+**BestellungsExtractor** (`src/extractors/bestellungs_extractor/`)
+- CSV processing with price conversion (cents → euros)
+- Groups by order UUID, outputs monthly JSON files
+
+### ✅ Data Unification (Complete)
+**DataUnifier** (`src/data_unifier/`)
+- Combines all three data sources by date
+- Maps articles using `ArticleLookupTable` (249 variant mappings)
+- Returns `(consolidated_data, unmapped_data)` tuple
+- Creates `ConsolidatedProductData` objects per date
+
+### ✅ Production Scripts (Complete)
+**Core Processing Scripts**:
+- `process_fiskaljournale.py` - .txt → JSON
+- `process_mengenlisten.py` - .pdf → JSON (with API rate limiting)  
+- `process_bestellungen.py` - .csv → monthly JSON
+- `process_unified_data.py` - unified processing + QC file generation
+
+**Helper Scripts**:
+- `reprocess_unparsed_mengenlisten.py` - retry failed PDFs
+- `extract_unmapped_bestellungen.py` - analyze unmapped items
+
+## File Structure & Key Classes
+
+### Data Models (Pydantic)
 ```
-Fiskaljournale (.txt) → FiskalExtractor → JSON
-Mengenlisten (.pdf) → MengenlistenExtractor (OCR) → JSON
-                                ↓
-                         DataValidator → Plausibility Check
-                                ↓  
-                         DataUnifier → Combined JSON
-                                ↓
-                    Feature Engineering → Model Training
-```
-
-## Implementation Plan
-
-### Phase 1: Data Extraction & Processing
-1. **FiskalExtractor** ✅ COMPLETE
-   - Pydantic data models (LineItem, Transaction, ExtractMetadata)
-   - Generator-based file processing with encoding detection
-   - Transaction block parsing (UUID, date, bill number, items, totals)
-   - JSON serialization matching diagram specification
-   - Quality assurance with unparsed block capture
-
-2. **MengenlistenExtractor** ✅ COMPLETE
-   - Gemini API integration for direct PDF processing
-   - Pydantic data models (Mengenliste, MengenlisteEntry, MengenlisteMetadata)
-   - JSON output format with date-keyed structure
-   - Robust error handling and unparsed block tracking
-
-3. **Integration Tests** ✅ COMPLETE
-   - Comprehensive unittest-based integration tests for both extractors
-   - Real test data validation using actual files
-   - Single API call optimization for MengenlistenExtractor tests
-   - Graceful handling of missing API keys
-
-4. **DataUnifier** ✅ COMPLETE
-   - Processes monthly fiskal extracts and mengenlisten directories
-   - Creates consolidated daily product data (one ConsolidatedProductData per date)
-   - Uses existing lookup tables for article name mapping to master articles
-   - Generates quality control files for unmapped items
-   - Monthly processing with JSON output capability
-
-### Phase 2: Model Development
-- **Feature Engineering**: Extract relevant predictive features
-- **Model Creation**: Build sales forecasting models
-
-## Current Status
-
-### ✅ FiskalExtractor - Complete & Production Ready
-
-**Implementation Details:**
-- **Architecture**: Clean separation with individual model files
-- **Processing**: Memory-efficient streaming for large files
-- **Encoding**: Automatic detection using `chardet` for German text
-- **Data Models**: Pydantic validation for type safety
-- **Core Logic**: Parses "Rechnung" blocks from start to "Signatur:" markers
-- **JSON Output**: List format with complete transaction data
-- **Quality Assurance**: Captures unparsed blocks for stakeholder review
-
-### ✅ MengenlistenExtractor - Complete & Production Ready
-
-**Implementation Details:**
-- **Architecture**: Modular design with separate client, models, and extractor
-- **API Integration**: Google Gemini 2.5 Flash for direct PDF processing
-- **Data Models**: Pydantic validation (Mengenliste, MengenlisteEntry, MengenlisteMetadata)
-- **Core Logic**: Structured prompt engineering for German bakery terminology
-- **JSON Output**: Date-keyed format with production/sales day tracking
-- **Error Handling**: Robust fallback with unparsed block capture
-
-### ✅ Integration Tests - Complete
-
-**Testing Coverage:**
-- **FiskalExtractor**: 5 comprehensive integration tests using real journal data
-- **MengenlistenExtractor**: 5 optimized tests with single API call sharing
-- **Test Organization**: Consolidated test files in `tests/test_files/`
-- **API Handling**: Graceful skipping when GEMINI_API_KEY unavailable
-
-### ✅ DataUnifier - Complete & Production Ready
-
-**Implementation Details:**
-- **Architecture**: Modular design with separate data models and lookup table handling
-- **Data Models**: ConsolidatedProductData, MasterArticleData, ArticleLookupTable (Pydantic)
-- **Lookup Integration**: Uses existing `data/master/lookup_table.json` with 249 variant mappings
-- **Core Logic**: Monthly processing - processes full fiskal extract + mengenlisten directory
-- **Date Grouping**: Groups fiskal transactions by date, loads mengenlisten files by date
-- **Data Merging**: Combines both sources into daily ConsolidatedProductData objects
-- **Quality Control**: Unmapped items written to `data/qc/unmapped_items_YYYY-MM-DD.json`
-- **JSON Output**: `write_monthly_consolidated_data()` method for serialization
-
-**Key Methods:**
-- `unify_monthly_data(fiskal_extract_path, mengenlisten_dir_path)` - Main processing method
-- `write_monthly_consolidated_data(consolidated_data, output_path)` - JSON export
-- Handles mengenlisten-only articles (creates entries with zero sales)
-- Proper fiskal transaction parsing from extractor JSON format
-
-**File Structure:**
-```
-src/bulle_planning_model/data_unifier/
-├── consolidated_product_data.py  # ConsolidatedProductData model
-├── master_article_data.py        # MasterArticleData model  
-├── article_lookup_table.py       # ArticleLookupTable model
-└── data_unifier.py              # Main DataUnifier class
+ConsolidatedProductData  # Daily unified data with total_revenue + master_articles
+MasterArticleData       # Article data with sales, quantity, leftover, sold_out_time
+ArticleLookupTable     # Maps article variants to master names (249 mappings)
+Transaction, LineItem   # Fiskal data models
+Mengenliste, MengenlisteEntry # Mengenlisten data models  
+Order, BestellungLineItem # Bestellungen data models
 ```
 
-### 🔄 Current Phase
-DataUnifier complete and tested. Ready for Phase 2: Model Development.
+### Key Method Signatures
+```python
+# DataUnifier - returns unmapped data for QC handling
+def unify_monthly_data(fiskal_path, mengenlisten_dir, bestellungen_path=None) -> Tuple[Dict[str, ConsolidatedProductData], Dict[str, Dict[str, List[str]]]]
+
+# All Extractors follow this pattern
+def read_file(file_path: Path) -> List[DataModel]
+def convert_to_json(data: List[DataModel], output_path: Path) -> None
+```
+
+### Directory Structure
+```
+src/bulle_planning_model/
+├── extractors/
+│   ├── fiskal_extractor/        # Register data processing
+│   ├── mengenlisten_extractor/  # PDF shift reports (Gemini API)
+│   └── bestellungs_extractor/   # Order CSV processing
+├── data_unifier/               # Combines all data sources
+├── process_*.py               # Production scripts
+└── test_*.py                 # Test scripts (legacy)
+
+data/
+├── raw/           # Input data files  
+├── processed/     # Generated JSON files
+│   ├── qc/       # Quality control & unmapped items
+│   └── master/   # lookup_table.json (249 mappings)
+```
+
+## Next Development Phase
+
+**Ready for**: Phase 2 - Model Development
+- Feature engineering from consolidated data
+- Predictive model creation  
+- Sales forecasting implementation
+
+**Technical debt**: None - all components production ready
+**Testing**: Integration tests available for core extractors

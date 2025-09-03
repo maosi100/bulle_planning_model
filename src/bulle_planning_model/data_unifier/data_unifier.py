@@ -23,7 +23,7 @@ class DataUnifier:
 
     def unify_monthly_data(
         self, fiskal_extract_path: Path, mengenlisten_dir_path: Path, bestellungen_extract_path: Path = None
-    ) -> Dict[str, ConsolidatedProductData]:
+    ) -> Tuple[Dict[str, ConsolidatedProductData], Dict[str, Dict[str, List[str]]]]:
         with open(fiskal_extract_path, "r", encoding="utf-8") as f:
             transactions_data = json.load(f)
 
@@ -41,6 +41,7 @@ class DataUnifier:
         all_dates = set(fiskal_by_date.keys()) | set(mengenlisten_by_date.keys()) | set(bestellungen_by_date.keys())
 
         consolidated_data = {}
+        all_unmapped_data = {}
         for date_str in all_dates:
             date_transactions = fiskal_by_date.get(date_str, [])
             mengenliste = mengenlisten_by_date.get(date_str)
@@ -60,10 +61,13 @@ class DataUnifier:
                 date_bestellungen, master_articles
             )
 
+            # Store unmapped items for caller to handle
             if unmapped_fiskal or unmapped_mengenlisten or unmapped_bestellungen:
-                self._write_unmapped_items(
-                    unmapped_fiskal, unmapped_mengenlisten, unmapped_bestellungen, date_str
-                )
+                all_unmapped_data[date_str] = {
+                    "unmapped_fiskal_items": unmapped_fiskal,
+                    "unmapped_mengenlisten_items": unmapped_mengenlisten,
+                    "unmapped_bestellungen_items": unmapped_bestellungen,
+                }
 
             total_revenue = sum(
                 article.total_sales for article in master_articles.values()
@@ -75,7 +79,7 @@ class DataUnifier:
                 master_articles=master_articles,
             )
 
-        return consolidated_data
+        return consolidated_data, all_unmapped_data
 
     def _parse_fiskal_transactions(
         self, transactions_data: List[dict]
@@ -278,22 +282,6 @@ class DataUnifier:
 
         return unmapped_items
 
-    def _write_unmapped_items(
-        self, unmapped_fiskal: List[str], unmapped_mengenlisten: List[str], unmapped_bestellungen: List[str], date: str
-    ):
-        qc_dir = Path("data/qc")
-        qc_dir.mkdir(parents=True, exist_ok=True)
-
-        qc_data = {
-            "date": date,
-            "unmapped_fiskal_items": unmapped_fiskal,
-            "unmapped_mengenlisten_items": unmapped_mengenlisten,
-            "unmapped_bestellungen_items": unmapped_bestellungen,
-        }
-
-        qc_file_path = qc_dir / f"unmapped_items_{date}.json"
-        with open(qc_file_path, "w", encoding="utf-8") as f:
-            json.dump(qc_data, f, indent=2, ensure_ascii=False)
 
     def write_monthly_consolidated_data(
         self, consolidated_data: Dict[str, ConsolidatedProductData], output_path: Path
